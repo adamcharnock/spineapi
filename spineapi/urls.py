@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic.simple import direct_to_template
 from spineapi.core.api import DreamResource, UserResource, StepResource
 from tastypie.api import Api
 
@@ -15,6 +16,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'spineapi_project.views.home', name='home'),
     # url(r'^', include('spineapi.core.urls')),
     url(r'^api/', include(v1_api.urls)),
+    url(r'^$', direct_to_template, { "template": "home.html" }),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

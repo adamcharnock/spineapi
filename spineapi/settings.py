@@ -60,17 +60,20 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = PROJECT_DIR.parent / 'static'
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    PROJECT_DIR.parent / 'assets',
 )
 
 # List of finder classes that know how to find static files in
@@ -110,6 +113,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    PROJECT_DIR.parent / "templates",
 )
 
 INSTALLED_APPS = (
@@ -127,6 +131,7 @@ INSTALLED_APPS = (
     'spineapi.core',
     'tastypie',
     'south',
+    'pipeline',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -157,3 +162,26 @@ LOGGING = {
         },
     }
 }
+
+PIPELINE_CSS = {
+    'main': {
+        'source_filenames': (
+            'css/*.css',
+        ),
+        'output_filename': 'css/main.css',
+    }
+}
+
+PIPELINE_JS = {
+    'main': {
+        'source_filenames': (
+            'js/*.js',
+            'compiled-js/*.js',
+        ),
+        'output_filename': 'css/main.js',
+    }
+}
+
+
+
+
