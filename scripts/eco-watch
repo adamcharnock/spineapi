@@ -1,0 +1,36 @@
+#!/bin/bash
+
+MONITORFILE="/tmp/eco-watch-$RANDOM"
+SOURCEDIR=$1
+DESTDIR=$1
+
+on_die()
+{
+    rm -f $MONITORFILE
+}
+trap 'on_die' TERM
+
+
+while true; do
+    if [ -f $MONITORFILE ]; then
+        CHANGED=`find . -name *.eco -newer $MONITORFILE`
+    else
+        CHANGED=`find . -name *.eco`
+    fi
+    
+    for f in $CHANGED; do
+        NAMESPACE=`echo "$f" | sed 's/.*templates\/\(.*\)\.[a-z]*eco/\1/g' | tr / .`
+        DESTDIR=`dirname ./assets/coffeescript/app/templates/test.eco`
+        mkdir -p $DESTDIR
+        OUTPUT=$(eco --identifier $NAMESPACE --output $DESTDIR $f 2>&1)
+        if [ $? -eq 0 ]; then
+            echo "Recompiled (eco) $f"
+        else
+            echo "Failed to recompile $f:"
+            echo $OUTPUT
+        fi
+    done
+    
+    sleep 1
+    # touch $MONITORFILE
+done
