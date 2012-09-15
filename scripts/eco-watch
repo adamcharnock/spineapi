@@ -27,10 +27,11 @@ while true; do
     for f in $files; do
         watchfile=`get_watch_file $f`
         if [[ ! -f $watchfile || `diff $f $watchfile` ]]; then
-            NAMESPACE=`echo "$f" | sed 's/.*templates\/\(.*\)\.[a-z]*eco/\1/g' | tr / .`
             SRCDIR=`dirname $f`
             SRCFILENAME=`basename $f`
-            DESTDIR=`dirname $f | sed 's/coffeescript/compiled-cs/'`
+            NAMESPACE=`echo "$SRCDIR" | sed 's/.*templates\(.*\)/\1/g' | tr / .`
+            NAMESPACE="templates$NAMESPACE"
+            DESTDIR=`dirname $f | sed 's/coffeescript/compiled-js/'`
             mkdir -p $DESTDIR
             cd $SRCDIR
             OUTPUT=$(eco --identifier $NAMESPACE --output $DESTDIR $SRCFILENAME 2>&1)
