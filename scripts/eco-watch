@@ -29,7 +29,7 @@ while true; do
         if [[ ! -f $watchfile || `diff $f $watchfile` ]]; then
             SRCDIR=`dirname $f`
             SRCFILENAME=`basename $f`
-            NAMESPACE=`echo "$SRCDIR" | sed 's/.*templates\(.*\)/\1/g' | tr / .`
+            NAMESPACE=`echo "$SRCDIR" | sed 's/.*views\(.*\)/\1/g' | tr / .`
             NAMESPACE="templates$NAMESPACE"
             DESTDIR=`dirname $f | sed 's/coffeescript/compiled-js/'`
             mkdir -p $DESTDIR

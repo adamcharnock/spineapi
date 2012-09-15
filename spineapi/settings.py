@@ -175,10 +175,20 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'main': {
         'source_filenames': (
-            'js/*.js',
-            'compiled-js/*.js',
+            'js/lib/jquery.1.8.1.min.js',
+            'compiled-js/lib/spine-1.0.8/src/spine.js',
+            'compiled-js/lib/spine-1.0.8/src/*.js',
+            'compiled-js/app/index.js',
         ),
-        'output_filename': 'css/main.js',
+        'output_filename': 'js/main.js',
+    },
+    'templates': {
+        'source_filenames': (
+            'compiled-js/app/views/*.js',
+            'compiled-js/app/views/*/*.js',
+            'compiled-js/app/views/*/*/*.js',
+        ),
+        'output_filename': 'js/views.js',
     }
 }
 
