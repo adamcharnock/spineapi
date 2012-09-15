@@ -1,36 +1,43 @@
 #!/bin/bash
 
-MONITORFILE="/tmp/eco-watch-$RANDOM"
 SOURCEDIR=$1
 DESTDIR=$1
 
 on_die()
 {
-    rm -f $MONITORFILE
+    # Cleanup watch files
+    echo "Cleaning up"
+    find . -name '.*\.ecowatch' -exec rm -f {} \;
+    exit 0
 }
 trap 'on_die' TERM
+trap 'on_die' SIGINT
 
+get_watch_file() {
+    filename=`basename $1`
+    dir=`dirname $1`
+    echo "$dir/.$filename.ecowatch"
+}
 
 while true; do
-    if [ -f $MONITORFILE ]; then
-        CHANGED=`find . -name *.eco -newer $MONITORFILE`
-    else
-        CHANGED=`find . -name *.eco`
-    fi
+    FILES=`find . -name *.eco`
     
-    for f in $CHANGED; do
-        NAMESPACE=`echo "$f" | sed 's/.*templates\/\(.*\)\.[a-z]*eco/\1/g' | tr / .`
-        DESTDIR=`dirname ./assets/coffeescript/app/templates/test.eco`
-        mkdir -p $DESTDIR
-        OUTPUT=$(eco --identifier $NAMESPACE --output $DESTDIR $f 2>&1)
-        if [ $? -eq 0 ]; then
-            echo "Recompiled (eco) $f"
-        else
-            echo "Failed to recompile $f:"
-            echo $OUTPUT
+    for f in $FILES; do
+        watchfile=`get_watch_file $f`
+        if [[ ! -f $watchfile || `diff $f $watchfile` ]]; then
+            NAMESPACE=`echo "$f" | sed 's/.*templates\/\(.*\)\.[a-z]*eco/\1/g' | tr / .`
+            DESTDIR=`dirname $f | sed 's/coffeescript/compiled-cs/'`
+            mkdir -p $DESTDIR
+            OUTPUT=$(eco --identifier $NAMESPACE --output $DESTDIR $f 2>&1)
+            if [ $? -eq 0 ]; then
+                echo "Recompiled (eco) $f into $DESTDIR"
+            else
+                echo "Failed to recompile $f:"
+                echo $OUTPUT
+            fi
+            cp $f $watchfile
         fi
     done
     
-    sleep 1
-    # touch $MONITORFILE
+    sleep 0.25
 done
