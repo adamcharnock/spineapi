@@ -2,11 +2,13 @@
 
 SOURCEDIR=$1
 DESTDIR=$1
+STARTDIR=$PWD
 
 on_die()
 {
     # Cleanup watch files
     echo "Cleaning up"
+    cd $STARTDIR
     find . -name '.*\.ecowatch' -exec rm -f {} \;
     exit 0
 }
@@ -20,21 +22,28 @@ get_watch_file() {
 }
 
 while true; do
-    FILES=`find . -name *.eco`
+    files=`find $STARTDIR -name *.eco`
     
-    for f in $FILES; do
+    for f in $files; do
         watchfile=`get_watch_file $f`
         if [[ ! -f $watchfile || `diff $f $watchfile` ]]; then
             NAMESPACE=`echo "$f" | sed 's/.*templates\/\(.*\)\.[a-z]*eco/\1/g' | tr / .`
+            SRCDIR=`dirname $f`
+            SRCFILENAME=`basename $f`
             DESTDIR=`dirname $f | sed 's/coffeescript/compiled-cs/'`
             mkdir -p $DESTDIR
-            OUTPUT=$(eco --identifier $NAMESPACE --output $DESTDIR $f 2>&1)
+            cd $SRCDIR
+            OUTPUT=$(eco --identifier $NAMESPACE --output $DESTDIR $SRCFILENAME 2>&1)
             if [ $? -eq 0 ]; then
                 echo "Recompiled (eco) $f into $DESTDIR"
             else
                 echo "Failed to recompile $f:"
                 echo $OUTPUT
+                if which growlnotify &> /dev/null; then
+                    growlnotify -m "Failed to compile eco template $SRCFILENAME" "Eco compliation failed"
+                fi
             fi
+            cd $STARTDIR
             cp $f $watchfile
         fi
     done
