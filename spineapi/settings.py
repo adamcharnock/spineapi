@@ -180,6 +180,8 @@ PIPELINE_JS = {
             'compiled-js/lib/spine-1.0.8/src/spine.js',
             'compiled-js/lib/spine-1.0.8/src/*.js',
             'compiled-js/app/index.js',
+            'compiled-js/app/models/*.js',
+            'compiled-js/app/controllers/*.js',
         ),
         'output_filename': 'js/main.js',
     },
