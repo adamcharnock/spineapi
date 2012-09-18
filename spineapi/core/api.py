@@ -33,6 +33,9 @@ class OwnerAuthorization(Authorization):
     
 
 class CustomModelResource(ModelResource):
+    class Meta:
+        always_return_data = True
+    
     def hydrate_id(self, bundle):
         if 'id' in bundle.data:
             del bundle.data['id']
@@ -43,7 +46,7 @@ class UuidResourceMixin(object):
         return bundle.obj.uuid
 
 class UserResource(CustomModelResource):
-    class Meta:
+    class Meta(CustomModelResource.Meta):
         queryset = User.objects.all()
         resource_name = 'user'
         detail_uri_name = 'username'
@@ -56,7 +59,7 @@ class DreamResource(UuidResourceMixin, CustomModelResource):
     user = fields.ForeignKey(UserResource, 'user')
     steps = fields.ToManyField('spineapi.core.api.StepResource', 'step_set', related_name='dream', blank=True)
     
-    class Meta:
+    class Meta(CustomModelResource.Meta):
         queryset = Dream.objects.all()
         resource_name = 'dream'
         detail_uri_name = 'uuid'
@@ -71,7 +74,7 @@ class DreamResource(UuidResourceMixin, CustomModelResource):
 class StepResource(UuidResourceMixin, CustomModelResource):
     dream = fields.ToOneField(DreamResource, 'dream')
     
-    class Meta:
+    class Meta(CustomModelResource.Meta):
         queryset = Step.objects.all()
         resource_name = 'step'
         detail_uri_name = 'uuid'
