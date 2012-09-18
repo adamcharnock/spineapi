@@ -29,7 +29,10 @@ class OwnerAuthorization(Authorization):
     def is_authorized(self, request, object=None):
         # If an object is in the list given by apply_limits() then we 
         # can assume they can do whatever they like with it
-        return True
+        if request.method in ['GET', 'PUT', 'POST', 'DELETE']:
+            return True
+        else:
+            return False # We don't handle any other request types
     
 
 class CustomModelResource(ModelResource):
