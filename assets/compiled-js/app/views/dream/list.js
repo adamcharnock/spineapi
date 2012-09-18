@@ -1,6 +1,6 @@
 (function() {
-  this.templates || (this.templates = {});
-  this.templates["dream"] = function(__obj) {
+  this.templates.dream || (this.templates.dream = {});
+  this.templates.dream["list"] = function(__obj) {
     if (!__obj) __obj = {};
     var __out = [], __capture = function(callback) {
       var out = __out, result;
@@ -40,7 +40,7 @@
     (function() {
       (function() {
       
-        __out.push(__sanitize(this.dream.title));
+        __out.push('<div class="dream-list">\n\t<h1>Dream catcher</h1>\n\t<form class="form-inline">\n\t\t<input type="text" name="title" placeholder="New dream name..." required>\n\t\t<input type="submit" class="btn btn-primary" value="Add dream">\n\t</form>\n\t<ul>\n\t\t\n\t</ul>\n</div>');
       
       }).call(this);
       

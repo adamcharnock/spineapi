@@ -166,6 +166,7 @@ LOGGING = {
 PIPELINE_CSS = {
     'main': {
         'source_filenames': (
+            'bootstrap/css/bootstrap.min.css',
             'css/*.css',
         ),
         'output_filename': 'css/main.css',

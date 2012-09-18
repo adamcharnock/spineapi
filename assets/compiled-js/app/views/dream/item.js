@@ -1,6 +1,6 @@
 (function() {
-  this.templates || (this.templates = {});
-  this.templates["dream"] = function(__obj) {
+  this.templates.dream || (this.templates.dream = {});
+  this.templates.dream["item"] = function(__obj) {
     if (!__obj) __obj = {};
     var __out = [], __capture = function(callback) {
       var out = __out, result;
@@ -40,7 +40,11 @@
     (function() {
       (function() {
       
+        __out.push('<li>');
+      
         __out.push(__sanitize(this.dream.title));
+      
+        __out.push('</li>');
       
       }).call(this);
       

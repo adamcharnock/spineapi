@@ -1,6 +1,6 @@
 (function() {
-  this.templates || (this.templates = {});
-  this.templates["dream"] = function(__obj) {
+  this.templates.dream || (this.templates.dream = {});
+  this.templates.dream["dream"] = function(__obj) {
     if (!__obj) __obj = {};
     var __out = [], __capture = function(callback) {
       var out = __out, result;

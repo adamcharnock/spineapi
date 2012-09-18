@@ -1,0 +1,9 @@
+<div class="item-list">
+	<form class="form-inline">
+		<input type="text" name="title" placeholder="New step name..." required>
+		<input type="submit" class="btn btn-primary" value="Add step">
+	</form>
+	<ul>
+		
+	</ul>
+</div>
