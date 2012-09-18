@@ -58,9 +58,11 @@
       this.render();
       App.Dream.bind('refresh', this.addAll);
       App.Dream.bind('create', this.addOne);
+      App.Dream.fetch();
     }
 
     DreamList.prototype.addOne = function(dream) {
+      this.log(dream);
       dream = new App.DreamItem({
         dream: dream
       });
@@ -69,7 +71,7 @@
 
     DreamList.prototype.addAll = function() {
       this.ul.empty();
-      return Dream.each(this.addOne);
+      return App.Dream.each(this.addOne);
     };
 
     DreamList.prototype.render = function() {

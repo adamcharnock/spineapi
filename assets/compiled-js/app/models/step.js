@@ -14,6 +14,10 @@
 
     Step.configure('created', 'title');
 
+    Step.extend(Spine.Model.Ajax);
+
+    Step.url = "/api/v1/step/";
+
     return Step;
 
   })(Spine.Model);

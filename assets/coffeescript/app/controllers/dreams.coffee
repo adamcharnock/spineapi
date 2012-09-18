@@ -27,14 +27,16 @@ class App.DreamList extends Spine.Controller
         @render()
         App.Dream.bind 'refresh', @addAll
         App.Dream.bind 'create', @addOne
+        App.Dream.fetch()
     
     addOne: (dream) =>
+        @log dream
         dream = new App.DreamItem(dream: dream)
         @ul.prepend dream.render().el
     
     addAll: =>
         @ul.empty()
-        Dream.each @addOne
+        App.Dream.each @addOne
     
     render: ->
         @replace templates.dream.list()

@@ -14,6 +14,17 @@
 
     Dream.configure('dream', 'body', 'created', 'slug', 'title');
 
+    Dream.extend(Spine.Model.Ajax);
+
+    Dream.url = "/api/v1/dream/";
+
+    Dream.fromJSON = function(data) {
+      if (!data) {
+        return;
+      }
+      return Dream.__super__.constructor.fromJSON.call(this, data.objects);
+    };
+
     return Dream;
 
   })(Spine.Model);

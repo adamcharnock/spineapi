@@ -177,6 +177,7 @@ PIPELINE_JS = {
     'main': {
         'source_filenames': (
             'js/lib/jquery.1.8.1.min.js',
+            'js/csrfsetup.js',
             'compiled-js/lib/spine-1.0.8/src/spine.js',
             'compiled-js/lib/spine-1.0.8/src/*.js',
             'compiled-js/app/index.js',
